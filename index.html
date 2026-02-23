@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Monica Ciobanu - Medic Stomatolog Botoșani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Setări generale */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        /* Variabile */
+        :root {
+            --promo-height: 40px;
+            --promo-safe-top: env(safe-area-inset-top, 0px);
+            --promo-total: calc(var(--promo-height) + var(--promo-safe-top));
+            
+            --primary: #2563eb; 
+            --primary-hover: #1d4ed8;
+            --emergency: #dc2626; 
+            --emergency-light: #fef2f2;
+            --text-main: #334155; 
+            --text-heading: #0f172a;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+        }
+
+        body { 
+            color: var(--text-main); line-height: 1.7; background-color: var(--bg-light); 
+            padding-top: var(--promo-total); overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* Butoane */
+        .btn { 
+            display: inline-block; background-color: var(--primary); color: #fff; padding: 14px 28px; 
+            border-radius: 50px; font-weight: 600; letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            border: none; cursor: pointer;
+        }
+        .btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+
+        /* Promo Bar */
+        .promo-bar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;
+            background-color: #FDE047; color: #422006; height: var(--promo-height);
+            padding-top: var(--promo-safe-top); box-sizing: content-box; font-size: 13.5px; font-weight: 500;
+        }
+        .promo-container { height: 100%; max-width: 1240px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; }
+        .promo-desktop { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 15px; }
+        .promo-text { white-space: nowrap; }
+        .promo-text a { color: #854d0e; font-weight: 600; transition: color 0.2s;}
+        .promo-text a:hover { color: #a16207; text-decoration: none; }
+        .promo-btn {
+            background-color: #ca8a04; color: white; padding: 5px 14px;
+            border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s;
+        }
+        .promo-btn:hover { background-color: #a16207; transform: scale(1.05); }
+
+        .promo-mobile { display: none; width: 100%; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px; }
+        .promo-mobile .truncate { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .promo-mobile .no-wrap { white-space: nowrap; flex-shrink: 0; }
+        .promo-mobile a { color: #854d0e; font-weight: 600; flex-shrink: 0; }
+
+        /* Header & Navigație Desktop */
+        header { 
+            background-color: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: #fff; padding: 15px 5%; display: flex; justify-content: space-between; 
+            align-items: center; position: sticky; top: var(--promo-total); z-index: 9000; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logo a, .footer-logo-link { display: flex; align-items: center; gap: 12px; text-decoration: none;}
+        .logo img, .footer-logo-link img { max-height: 42px; width: auto; }
+        .logo-text { display: flex; flex-direction: column; text-align: left; }
+        .logo-text .name { font-size: 1.25rem; font-weight: 700; color: #f8fafc; line-height: 1.1; letter-spacing: -0.5px;}
+        .logo-text .title { font-size: 0.65rem; font-weight: 500; color: #94a3b8; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 3px; }
+
+        nav ul { list-style: none; display: flex; gap: 24px; align-items: center; }
+        nav a { font-weight: 500; font-size: 0.95rem; color: #cbd5e1; transition: color 0.3s; }
+        nav a:hover { color: #fff; }
+        .mobile-nav-header { display: none; } /* Ascuns pe desktop */
+
+        /* Meniu Hamburger Icon */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 10001; position: relative; }
+        .hamburger span { display: block; width: 25px; height: 3px; background-color: #fff; border-radius: 3px; transition: all 0.3s ease; }
+
+        /* Hero Section */
+        .hero { 
+            background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.7)), url('hero.jpg') center/cover; 
+            color: #fff; text-align: center; padding: 120px 20px; min-height: 75vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+        }
+        .hero h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -1px; line-height: 1.2; }
+        .hero p { font-size: 1.25rem; max-width: 650px; margin-bottom: 35px; font-weight: 300; color: #f1f5f9; }
+
+        .rate-banner { 
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 12px 24px; border-radius: 50px; 
+            font-weight: 500; font-size: 0.95rem; margin-bottom: 30px; display: inline-block;
+        }
+
+        /* Secțiuni standard */
+        section { padding: 80px 10%; text-align: center; }
+        section h2 { font-size: 2.4rem; font-weight: 700; margin-bottom: 50px; color: var(--text-heading); position: relative; letter-spacing: -0.5px; }
+        section h2::after { content: ''; display: block; width: 50px; height: 4px; background: var(--primary); margin: 16px auto 0; border-radius: 2px; }
+
+        /* Secțiunea Despre */
+        .about-content { display: flex; flex-wrap: wrap; gap: 50px; align-items: center; max-width: 1050px; margin: 0 auto; text-align: left; }
+        .about-image { flex: 1; min-width: 300px; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); object-fit: cover; }
+        .about-text-wrapper { flex: 2; min-width: 300px; font-size: 1.15rem; color: var(--text-main); }
+        .about-text-wrapper strong { color: var(--text-heading); }
+
+        /* Container Servicii */
+        .services-wrapper { position: relative; max-width: 1150px; margin: 0 auto; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .slider-dots { display: none; }
+
+        .service-card { 
+            background: var(--surface); padding: 40px 30px; border-radius: 16px; 
+            border: 1px solid #f1f5f9; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04); 
+            transition: all 0.4s ease; display: flex; flex-direction: column; justify-content: flex-start; text-align: left;
+        }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08); border-color: #dbeafe; }
+        .service-card h3 { margin: 15px 0; font-size: 1.35rem; color: var(--text-heading); font-weight: 600; }
+        .service-card p { font-size: 0.95rem; color: #64748b; margin-bottom: 0;}
+        .service-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 64px; height: 64px; background-color: #eff6ff; color: var(--primary);
+            border-radius: 16px; margin-bottom: 10px; transition: all 0.4s;
+        }
+        .service-card:hover .service-icon { background-color: var(--primary); color: #fff; transform: scale(1.05) rotate(-5deg); }
+        
+        .card-emergency { border: 1px solid #fecaca; background-color: var(--surface); }
+        .card-emergency .service-icon { background-color: var(--emergency-light); color: var(--emergency); }
+        .card-emergency h3 { color: var(--emergency); }
+        .card-emergency:hover { border-color: var(--emergency); box-shadow: 0 20px 40px rgba(220, 38, 38, 0.12); }
+        .card-emergency:hover .service-icon { background-color: var(--emergency); color: #fff; }
+
+        /* Rezultate / Before & After Slider Cards */
+        .rezultate-wrapper { max-width: 1150px; margin: 0 auto; }
+        .rezultate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        
+        .ba-card {
+            background: var(--surface); border-radius: 16px; border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04); overflow: hidden;
+            display: flex; flex-direction: column; text-align: left; transition: all 0.4s ease;
+        }
+        .ba-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08); }
+
+        .image-compare-container {
+            position: relative; width: 100%; aspect-ratio: 2 / 1; 
+            overflow: hidden; background-color: #000; --pos: 50%; 
+        }
+        .image-compare-container img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+        }
+        .image-after { z-index: 1; }
+        
+        /* Container-ul corectat pentru ÎNAINTE: taie atât imaginea cât și label-ul în același timp */
+        .before-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
+            clip-path: inset(0 calc(100% - var(--pos)) 0 0); pointer-events: none;
+        }
+
+        .slider-range { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 4; cursor: ew-resize; }
+        .slider-ui {
+            position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; background: #fff;
+            z-index: 3; transform: translateX(-50%); pointer-events: none;
+        }
+        
+        .slider-button {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; background: #fff; border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+        }
+        .slider-button svg { width: 20px; height: 20px; color: #1e293b; }
+
+        .ba-label-before, .ba-label-after {
+            position: absolute; bottom: 15px; background: #1e293b; color: #fff; 
+            padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .ba-label-before { left: 15px; } /* Nu mai are nevoie de z-index, e în interiorul wrapperului */
+        .ba-label-after { right: 15px; z-index: 1; }
+
+        .ba-content { padding: 25px 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .ba-content h3 { font-size: 1.25rem; color: var(--text-heading); font-weight: 600; margin-bottom: 8px; }
+        .ba-content p { font-size: 0.95rem; color: #64748b; margin: 0; }
+
+        /* Finanțare */
+        .financing { 
+            background-color: var(--surface); border: none; border-radius: 20px; 
+            padding: 60px 40px; margin: 0 10%; box-shadow: 0 15px 50px rgba(15, 23, 42, 0.05); 
+        }
+        .financing h3 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; }
+        .financing p { font-size: 1.15rem; max-width: 800px; margin: 0 auto; }
+
+        /* Contact */
+        .contact-container { display: flex; flex-wrap: wrap; gap: 50px; justify-content: center; text-align: left; max-width: 1100px; margin: 0 auto;}
+        .contact-info, .map-container { flex: 1; min-width: 300px; }
+        .contact-icon { display: inline-block; vertical-align: middle; margin-right: 12px; color: var(--primary); }
+        .contact-info p { margin-bottom: 20px; font-size: 1.1rem; display: flex; align-items: center;}
+        .contact-info strong { color: var(--text-heading); margin-right: 5px; min-width: 70px;}
+        .contact-info .btn { margin-top: 15px; }
+
+        /* Footer */
+        footer { background: #0f172a; color: #cbd5e1; padding: 70px 5% 30px; margin-top: 60px; font-size: 0.95rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1200px; margin: 0 auto 40px; text-align: left; }
+        .footer-col h4 { color: #fff; font-size: 1.2rem; margin-bottom: 20px; font-weight: 600; }
+        .footer-col p { margin-bottom: 10px; line-height: 1.6; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul a { transition: color 0.3s; }
+        .footer-col ul a:hover { color: var(--primary); }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: #64748b; }
+
+        /* Responsive & Mobile Config */
+        @media (max-width: 992px) {
+            section { padding: 60px 5%; }
+            .services-grid, .rezultate-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .promo-desktop { display: none; }
+            .promo-mobile { display: flex; }
+            header { padding: 15px 20px; }
+            .hamburger { display: flex; }
+            
+            /* Navigație Mobile Full-Screen Overlay */
+            nav {
+                position: fixed; top: 0; left: -100%; width: 100vw; height: 100vh;
+                background-color: rgba(15, 23, 42, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+                z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+                transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            nav.active { left: 0; }
+            
+            /* Header cu Logo Mare in Meniul Mobile */
+            .mobile-nav-header {
+                display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; text-align: center; width: 100%;
+            }
+            .mobile-nav-header img { max-height: 70px; margin-bottom: 15px; }
+            .mobile-nav-header .logo-text { align-items: center; text-align: center; } 
+            .mobile-nav-header .logo-text .name { font-size: 1.8rem; }
+            .mobile-nav-header .logo-text .title { font-size: 0.85rem; }
+
+            nav ul { flex-direction: column; gap: 25px; width: 100%; }
+            nav ul li { text-align: center; }
+            nav a { font-size: 1.4rem; font-weight: 600; color: #f8fafc; display: block; width: 100%; }
+            
+            /* Animație Hamburger spre X */
+            .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            .hero { padding: 80px 20px; background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.7)), url('hero-mobile.jpg'); }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1.1rem; }
+            .contact-container { flex-direction: column; }
+            .financing { margin: 0 5%; padding: 40px 20px; }
+
+            /* Instagram-style doar pentru Servicii */
+            .services-grid {
+                display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+                scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+                gap: 20px; padding-bottom: 10px;
+            }
+            .services-grid::-webkit-scrollbar { display: none; }
+            .services-grid { -ms-overflow-style: none; scrollbar-width: none; }
+            .service-card { min-width: 100%; scroll-snap-align: center; }
+            
+            .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+            .dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; cursor: pointer; transition: all 0.3s ease; }
+            .dot.active { background: var(--primary); width: 24px; border-radius: 4px; }
+
+            /* Grid vertical (stack) pentru Rezultate pe mobil */
+            .rezultate-grid { display: flex; flex-direction: column; gap: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="promo-bar">
+        <div class="promo-container">
+            <div class="promo-desktop">
+                <span class="promo-text">
+                    Concept demo • Conținut orientativ • Dezvoltat de sky.ro •
+                    <a href="mailto:dan.trifan@sky.ro">dan.trifan@sky.ro</a> •
+                    <a href="tel:+40720088880">+4 0720 088 880</a>
+                </span>
+                <a href="https://wa.me/40720088880" target="_blank" rel="noopener noreferrer" class="promo-btn">WhatsApp</a>
+            </div>
+            <div class="promo-mobile">
+                <div class="truncate">Concept demo</div>
+                <div class="no-wrap">Dezvoltat de sky.ro</div>
+                <a href="tel:+40720088880">+4 0720 088 880</a>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="logo.png" alt="Dr. Monica Ciobanu Logo">
+                <div class="logo-text">
+                    <span class="name">Dr. Monica Ciobanu</span>
+                    <span class="title">MEDIC STOMATOLOG</span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="hamburger" aria-label="Deschide meniul de navigare">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <nav>
+            <div class="mobile-nav-header">
+                <img src="logo.png" alt="Dr. Monica Ciobanu Logo">
+                <div class="logo-text">
+                    <span class="name">Dr. Monica Ciobanu</span>
+                    <span class="title">MEDIC STOMATOLOG</span>
+                </div>
+            </div>
+
+            <ul>
+                <li><a href="#despre">Despre</a></li>
+                <li><a href="#servicii">Servicii</a></li>
+                <li><a href="#rezultate">Rezultate</a></li>
+                <li><a href="#rate">Plată în Rate</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Zâmbetul tău complet, într-un singur loc</h1>
+        <p>Tratamente stomatologice complete, de la prevenție la estetică și reabilitare complexă. Te așteptăm în Botoșani pentru o experiență fără durere.</p>
+        <div class="rate-banner">Plată în 6 RATE fără dobândă prin Cardul STAR BT!</div>
+        <a href="tel:0749382976" class="btn">Sună pentru programare</a>
+    </section>
+
+    <section id="despre">
+        <h2>Despre Dr. Monica Ciobanu</h2>
+        <div class="about-content">
+            <img src="despre.jpg" alt="Dr. Monica Ciobanu" class="about-image">
+            <div class="about-text-wrapper">
+                <p>Fiecare pacient este unic, la fel și zâmbetul său. La cabinetul nostru, abordăm sănătatea dentară integrat. Indiferent dacă ai nevoie de o simplă igienizare, de rezolvarea unei urgențe sau de o reabilitare orală completă, suntem aici să îți oferim cele mai bune soluții, cu răbdare și profesionalism.</p>
+                <br>
+                <p><strong>Frica de dentist rămâne la ușă!</strong> Ne asigurăm că fiecare tratament se desfășoară într-un mediu relaxant, modern și lipsit de durere.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicii" style="background-color: #f1f5f9;">
+        <h2>Serviciile Noastre</h2>
+        <div class="services-wrapper" id="servicii-slider">
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5c-1.5-1.5-3-2-4.5-2C5 3.5 4 4.5 4 6.5v4c0 2.5 1.5 4.5 3 5.5v3.5c0 1 .5 1.5 1.5 1.5s1.5-.5 1.5-1.5V17h4v2.5c0 1 .5 1.5 1.5 1.5s1.5-.5 1.5-1.5V16c1.5-1 3-3 3-5.5v-4c0-2-1-3-3.5-3-1.5 0-3 .5-4.5 2z"/></svg>
+                    </div>
+                    <h3>Profilaxie & Igienă</h3>
+                    <p>Detartraj, periaj profesional, fluorizare. Baza unui zâmbet sănătos.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                    </div>
+                    <h3>Odontoterapie</h3>
+                    <p>Tratamentul cariilor (plombe fizionomice) și tratamente de canal sigure.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.912 5.813a2 2 0 0 0 1.272 1.272L21 12l-5.816 1.912a2 2 0 0 0-1.272 1.272L12 21l-1.912-5.816a2 2 0 0 0-1.272-1.272L3 12l5.816-1.912a2 2 0 0 0 1.272-1.272L12 3z"/></svg>
+                    </div>
+                    <h3>Estetică & Protetică</h3>
+                    <p>Coroane dentare, punți, fațete și albire dentară profesională.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <h3>Chirurgie & Implant</h3>
+                    <p>Extracții realizate cu blândețe și soluții moderne de implanturi dentare.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    </div>
+                    <h3>Pedodonție</h3>
+                    <p>Tratamente adaptate pentru cei mici, într-o atmosferă prietenoasă.</p>
+                </div>
+                
+                <div class="service-card card-emergency">
+                    <div class="service-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h3>Urgențe Stomatologice</h3>
+                    <p>Tratament rapid pentru dureri acute, infecții sau traumatisme dentare.</p>
+                </div>
+
+            </div>
+            <div class="slider-dots"></div>
+        </div>
+    </section>
+
+    <section id="rezultate">
+        <h2>Cazuri Clinice</h2>
+        <div class="rezultate-wrapper">
+            <div class="rezultate-grid">
+                
+                <div class="ba-card">
+                    <div class="image-compare-container">
+                        <img src="after1.jpg" alt="După tratament" class="image-after">
+                        <span class="ba-label-after">DUPĂ</span>
+                        
+                        <div class="before-wrapper">
+                            <img src="before1.jpg" alt="Înainte de tratament" class="image-before">
+                            <span class="ba-label-before">ÎNAINTE</span>
+                        </div>
+                        
+                        <div class="slider-ui">
+                            <div class="slider-button">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 16l-4-4 4-4 M14 16l4-4-4-4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="slider-range" aria-label="Compară rezultatele">
+                    </div>
+                    <div class="ba-content">
+                        <h3>Restaurare Estetică Directă</h3>
+                        <p>Închiderea diastemei (strungăreței) cu material compozit premium. O soluție estetică rapidă, minim invazivă și eficientă din punct de vedere al costurilor, ca alternativă la fațete sau coroane ceramice.</p>
+                    </div>
+                </div>
+
+                <div class="ba-card">
+                    <div class="image-compare-container">
+                        <img src="after2.jpg" alt="După tratament" class="image-after">
+                        <span class="ba-label-after">DUPĂ</span>
+
+                        <div class="before-wrapper">
+                            <img src="before2.jpg" alt="Înainte de tratament" class="image-before">
+                            <span class="ba-label-before">ÎNAINTE</span>
+                        </div>
+                        
+                        <div class="slider-ui">
+                            <div class="slider-button">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 16l-4-4 4-4 M14 16l4-4-4-4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="slider-range" aria-label="Compară rezultatele">
+                    </div>
+                    <div class="ba-content">
+                        <h3>Reabilitare Protetică cu Zirconiu</h3>
+                        <p>Înlocuirea lucrărilor protetice vechi pentru a restabili funcționalitatea și estetica zâmbetului. Reabilitarea a fost realizată utilizând coroane din zirconiu de înaltă precizie și o proteză maxilară printată 3D.</p>
+                    </div>
+                </div>
+
+                <div class="ba-card">
+                    <div class="image-compare-container">
+                        <img src="after3.jpg" alt="După tratament" class="image-after">
+                        <span class="ba-label-after">DUPĂ</span>
+                        
+                        <div class="before-wrapper">
+                            <img src="before3.jpg" alt="Înainte de tratament" class="image-before">
+                            <span class="ba-label-before">ÎNAINTE</span>
+                        </div>
+                        
+                        <div class="slider-ui">
+                            <div class="slider-button">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 16l-4-4 4-4 M14 16l4-4-4-4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="slider-range" aria-label="Compară rezultatele">
+                    </div>
+                    <div class="ba-content">
+                        <h3>Reabilitare Complexă pe Implanturi</h3>
+                        <p>Reabilitare orală complexă cu sprijin pe implanturi dentare. Un tratament complet ce asigură reechilibrarea funcțională a ocluziei și o estetică naturală, garantând rezultate predictibile pe termen lung.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="rate" class="financing">
+        <h3>Zâmbetul dorit, fără efort financiar!</h3>
+        <p>Știm că tratamentele complexe pot fi o investiție. De aceea, la cabinetul Dr. Monica Ciobanu îți oferim posibilitatea de a achita <strong>orice serviciu medical în 6 RATE egale</strong>, folosind cardul STAR de la Banca Transilvania.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Te așteptăm cu drag!</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <p>
+                    <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <strong>Telefon:</strong> <a href="tel:0749382976">0749 382 976</a>
+                </p>
+                <p>
+                    <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <strong>Email:</strong> <a href="mailto:monadintisor@gmail.com">monadintisor@gmail.com</a>
+                </p>
+                <p>
+                    <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <strong>Adresă:</strong> Str. Gheorghe Filipescu nr. 13, Sc. A, Ap. 1.
+                </p>
+                <p>
+                    <svg class="contact-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                    <strong>Reper:</strong> Cartier Stejari, în parcarea magazinului Ovisim, Botoșani.
+                </p>
+                <br>
+                <a href="tel:0749382976" class="btn">Programează-te acum</a>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2683.304723837936!2d26.668118999999994!3d47.736742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4734e913268525ff%3A0x96df3915feb09b34!2sCMI%20Dr%20Ciobanu%20Monica!5e0!3m2!1sen!2sro!4v1771838081455!5m2!1sen!2sro" width="100%" height="300" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="#" class="footer-logo-link" style="margin-bottom: 20px; display: inline-flex;">
+                    <img src="logo.png" alt="Dr. Monica Ciobanu Logo">
+                    <div class="logo-text">
+                        <span class="name">Dr. Monica Ciobanu</span>
+                        <span class="title">MEDIC STOMATOLOG</span>
+                    </div>
+                </a>
+                <p>Cabinet stomatologic modern în Botoșani, dedicat zâmbetului și sănătății tale dentare. Tratamente fără durere, cu profesionalism.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Linkuri Rapide</h4>
+                <ul>
+                    <li><a href="#despre">Despre noi</a></li>
+                    <li><a href="#servicii">Servicii Medicale</a></li>
+                    <li><a href="#rezultate">Cazuri Clinice</a></li>
+                    <li><a href="#rate">Plată în Rate</a></li>
+                    <li><a href="#contact">Contact & Hartă</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Program Cabinet</h4>
+                <p>Luni - Vineri: 09:00 - 19:00</p>
+                <p>Sâmbătă: Urgențe (la cerere)</p>
+                <p>Duminică: Închis</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>Tel: <a href="tel:0749382976">0749 382 976</a></p>
+                <p>Str. Gheorghe Filipescu nr. 13, Botoșani</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Dr. Monica Ciobanu - Medic Stomatolog. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/40720088880" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" style="position: fixed; bottom: 24px; right: 24px; z-index: 50; display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background-color: #25D366; color: white; border-radius: 9999px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='scale(1)';">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 32px; height: 32px;">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelectorAll('nav ul li a');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                nav.classList.toggle('active');
+                
+                if(nav.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            if (window.innerWidth <= 768) {
+                const serviciiWrapper = document.getElementById('servicii-slider');
+                if(serviciiWrapper) {
+                    const grid = serviciiWrapper.querySelector('.services-grid');
+                    const dotsContainer = serviciiWrapper.querySelector('.slider-dots');
+                    const cards = grid.children;
+                    
+                    dotsContainer.innerHTML = '';
+                    for(let i = 0; i < cards.length; i++) {
+                        const dot = document.createElement('div');
+                        dot.classList.add('dot');
+                        if(i === 0) dot.classList.add('active');
+                        
+                        dot.addEventListener('click', () => {
+                            grid.scrollTo({ left: grid.clientWidth * i, behavior: 'smooth' });
+                        });
+                        dotsContainer.appendChild(dot);
+                    }
+
+                    const dots = dotsContainer.querySelectorAll('.dot');
+                    grid.addEventListener('scroll', () => {
+                        let index = Math.round(grid.scrollLeft / grid.clientWidth);
+                        dots.forEach(dot => dot.classList.remove('active'));
+                        if (dots[index]) dots[index].classList.add('active');
+                    });
+                }
+            }
+
+            const sliders = document.querySelectorAll('.image-compare-container');
+            
+            sliders.forEach(slider => {
+                const range = slider.querySelector('.slider-range');
+                
+                const updateSlider = (val) => {
+                    slider.style.setProperty('--pos', `${val}%`);
+                };
+
+                range.addEventListener('input', (e) => {
+                    updateSlider(e.target.value);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
